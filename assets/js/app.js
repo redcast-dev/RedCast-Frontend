@@ -1,7 +1,7 @@
 // RedCast Frontend Logic
 const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? "http://localhost:8080"
-    : "redcast-backend-production.up.railway.app"; // Replace with your Railway URL
+    : "https://redcast-backend-production.up.railway.app"; // Replace with your Railway URL
 
 // Tab Switching
 function switchTab(tabName) {
