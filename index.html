@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RedCast - Premium YouTube Downloader & MP3 Converter</title>
+    <meta name="description"
+        content="Download YouTube videos in 4K, 1080p, 720p, 480p, 360p, 240p. Convert to MP3 with best quality (320kbps). Fast, free, and secure.">
+
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <!-- Ionicons for Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon"><ion-icon name="cloud-download"></ion-icon></span>
+            RedCast
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#howto">How to Use</a>
+            <a href="privacy.html">Privacy</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Download Video & Audio from <span class="highlight">YouTube</span></h1>
+            <p class="hero-subtitle">The fastest converter for MP4, MP3, 4K, 1080p, 480p, 360p, 240p and more. Free &
+                Unlimited.</p>
+
+            <div class="converter-box">
+                <!-- Tab Navigation -->
+                <div class="tab-nav">
+                    <button class="tab-btn active" onclick="switchTab('single')">
+                        <ion-icon name="download-outline"></ion-icon> Single Download
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('playlist')">
+                        <ion-icon name="list-outline"></ion-icon> Playlist
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('bulk')">
+                        <ion-icon name="layers-outline"></ion-icon> Bulk Links
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('subtitle')">
+                        <ion-icon name="text-outline"></ion-icon> Subtitles
+                    </button>
+                </div>
+
+                <!-- Single Download Tab -->
+                <div id="single-tab" class="tab-content active">
+                    <div class="input-group">
+                        <input id="url" type="text" placeholder="Paste YouTube link here..." autocomplete="off">
+                        <button id="paste-btn"
+                            onclick="navigator.clipboard.readText().then(text => document.getElementById('url').value = text)"><ion-icon
+                                name="clipboard-outline"></ion-icon></button>
+                    </div>
+
+                    <div class="options-grid">
+                        <div class="select-wrapper">
+                            <label for="quality">Quality</label>
+                            <select id="quality">
+                                <option value="2160">4K Ultra HD (2160p)</option>
+                                <option value="1440">2K Quad HD (1440p)</option>
+                                <option value="1080" selected>Full HD (1080p)</option>
+                                <option value="720">HD (720p)</option>
+                                <option value="480">480p</option>
+                                <option value="360">360p</option>
+                                <option value="240">240p</option>
+                                <option value="144">144p Low Quality</option>
+                            </select>
+                        </div>
+
+                        <div class="select-wrapper">
+                            <label for="mode">Format</label>
+                            <select id="mode">
+                                <option value="video">Video (MP4)</option>
+                                <option value="audio_320">Audio MP3 (320kbps)</option>
+                                <option value="audio_128">Audio MP3 (128kbps)</option>
+                                <option value="audio_64">Audio MP3 (64kbps)</option>
+                                <option value="webm">WebM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="download-btn" onclick="startDownload()">
+                        Start Download <ion-icon name="arrow-forward"></ion-icon>
+                    </button>
+                </div>
+
+                <!-- Playlist Download Tab -->
+                <div id="playlist-tab" class="tab-content">
+                    <div class="input-group">
+                        <input id="playlist-url" type="text" placeholder="Paste playlist link here..."
+                            autocomplete="off">
+                        <button
+                            onclick="navigator.clipboard.readText().then(text => document.getElementById('playlist-url').value = text)">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </button>
+                    </div>
+
+                    <div class="info-box" id="playlist-info" style="display:none;">
+                        <h4 id="playlist-title"></h4>
+                        <p id="playlist-count"></p>
+                    </div>
+
+                    <div class="options-grid">
+                        <div class="select-wrapper">
+                            <label for="playlist-quality">Quality</label>
+                            <select id="playlist-quality">
+                                <option value="1080" selected>Full HD (1080p)</option>
+                                <option value="720">HD (720p)</option>
+                                <option value="480">480p</option>
+                            </select>
+                        </div>
+
+                        <div class="select-wrapper">
+                            <label for="playlist-mode">Format</label>
+                            <select id="playlist-mode">
+                                <option value="video">Video (MP4)</option>
+                                <option value="audio_320">Audio MP3 (320kbps)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="download-btn" onclick="checkPlaylist()">
+                        Check Playlist <ion-icon name="search"></ion-icon>
+                    </button>
+                    <button class="download-btn secondary" onclick="downloadPlaylist()" style="display:none;"
+                        id="playlist-download-btn">
+                        Download All <ion-icon name="cloud-download"></ion-icon>
+                    </button>
+                </div>
+
+                <!-- Bulk Download Tab -->
+                <div id="bulk-tab" class="tab-content">
+                    <div class="input-group">
+                        <textarea id="bulk-urls" placeholder="Paste multiple links (one per line)..."
+                            rows="6"></textarea>
+                    </div>
+
+                    <div class="options-grid">
+                        <div class="select-wrapper">
+                            <label for="bulk-quality">Quality</label>
+                            <select id="bulk-quality">
+                                <option value="1080" selected>Full HD (1080p)</option>
+                                <option value="720">HD (720p)</option>
+                                <option value="480">480p</option>
+                            </select>
+                        </div>
+
+                        <div class="select-wrapper">
+                            <label for="bulk-mode">Format</label>
+                            <select id="bulk-mode">
+                                <option value="video">Video (MP4)</option>
+                                <option value="audio_320">Audio MP3 (320kbps)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button class="download-btn" onclick="startBulkDownload()">
+                        Start Bulk Download <ion-icon name="arrow-forward"></ion-icon>
+                    </button>
+
+                    <div id="bulk-progress-list" style="display:none;"></div>
+                </div>
+
+                <!-- Subtitle Download Tab -->
+                <div id="subtitle-tab" class="tab-content">
+                    <div class="input-group">
+                        <input id="subtitle-url" type="text" placeholder="Paste video link here..." autocomplete="off">
+                        <button
+                            onclick="navigator.clipboard.readText().then(text => document.getElementById('subtitle-url').value = text)">
+                            <ion-icon name="clipboard-outline"></ion-icon>
+                        </button>
+                    </div>
+
+                    <div class="select-wrapper">
+                        <label for="subtitle-lang">Language</label>
+                        <select id="subtitle-lang">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                            <option value="it">Italian</option>
+                            <option value="pt">Portuguese</option>
+                            <option value="ru">Russian</option>
+                            <option value="ja">Japanese</option>
+                            <option value="ko">Korean</option>
+                            <option value="zh">Chinese</option>
+                            <option value="ar">Arabic</option>
+                            <option value="hi">Hindi</option>
+                        </select>
+                    </div>
+
+                    <button class="download-btn" onclick="downloadSubtitles()">
+                        Download Subtitles <ion-icon name="download-outline"></ion-icon>
+                    </button>
+                </div>
+
+                <!-- Progress Bar (shared across all tabs) -->
+                <div class="progress-container" style="display:none;" id="progress-container">
+                    <div class="progress-bar">
+                        <div id="bar" style="width:0%"></div>
+                    </div>
+                    <p id="status-text">Initializing...</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Ad Banner (Placeholder) -->
+    <div class="ad-banner">
+        <p>Sponsored Advertisement</p>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title">Best Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="icon-box"><ion-icon name="flash"></ion-icon></div>
+                    <h3>Fast & Easy</h3>
+                    <p>Download your videos at lightning speed. Our engine is optimized for high-performance
+                        conversions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><ion-icon name="shield-checkmark"></ion-icon></div>
+                    <h3>Safe & Secure</h3>
+                    <p>No malware, no viruses. We prioritize your security and do not equate your data. 100% clean.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><ion-icon name="layers"></ion-icon></div>
+                    <h3>All Formats Supported</h3>
+                    <p>We support all video and audio formats including MP4, MP3, 3GP, WEBM, FLV, M4A and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><ion-icon name="list"></ion-icon></div>
+                    <h3>Playlist Download</h3>
+                    <p>Download entire YouTube playlists with a single click. Save time and get all your favorite videos
+                        at once.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><ion-icon name="copy"></ion-icon></div>
+                    <h3>Bulk Processing</h3>
+                    <p>Process multiple URLs simultaneously. Perfect for downloading multiple videos in one go.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box"><ion-icon name="text"></ion-icon></div>
+                    <h3>Subtitle Download</h3>
+                    <p>Download subtitles in SRT format. Support for multiple languages including auto-generated
+                        captions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Text Details Section (SEO) -->
+    <section class="details-section">
+        <div class="container">
+            <h2>Why use RedCast Youtube Downloader?</h2>
+            <p><strong>RedCast</strong> represents the next generation of video downloading tools. While other sites
+                offer basic downloading, we provide a premium, ad-lite experience with support for low-bandwidth
+                resolutions like <strong>240p and 360p</strong>, perfect for mobile data users, as well as
+                high-definition 4K for desktop users.</p>
+            <br>
+            <p>Our <strong>MP3 Converter</strong> mode features multiple bitrate options (320kbps for audiophiles,
+                64kbps for distinct voice memos), making it better than the standard generic tools. Experience the
+                cleaner UI, faster speeds, and diverse format support today.</p>
+        </div>
+    </section>
+
+    <!-- How to Use -->
+    <section id="howto" class="howto-section">
+        <div class="container">
+            <h2 class="section-title">How to Download?</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <span class="step-number">1</span>
+                    <h3>Paste URL</h3>
+                    <p>Copy the video link from YouTube and paste it into the box above.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">2</span>
+                    <h3>Select Format</h3>
+                    <p>Choose your preferred quality (e.g. 1080p, 480p) or Audio MP3.</p>
+                </div>
+                <div class="step-card">
+                    <span class="step-number">3</span>
+                    <h3>Download</h3>
+                    <p>Click the "Start Download" button and wait for the magic to happen.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 RedCast. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="disclaimer.html">Disclaimer</a>
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/app.js"></script>
+</body>
+
+</html>
