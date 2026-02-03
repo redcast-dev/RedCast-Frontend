@@ -48,6 +48,8 @@ async function startDownload() {
     }, 3000);
 }
 
+let currentPlaylistVideos = [];
+
 // Check Playlist Info
 async function checkPlaylist() {
     const url = document.getElementById("playlist-url").value;
@@ -68,14 +70,20 @@ async function checkPlaylist() {
         const data = await res.json();
         if (data.error) throw new Error(data.error);
 
-        if (data.type === 'video' && url.includes('list=')) {
-            alert("Playlists are disabled. This single video will be processed.");
+        if (data.type === 'playlist') {
+            document.getElementById('playlist-title').innerText = data.title;
+            document.getElementById('playlist-count').innerText = `${data.count} videos found`;
+            document.getElementById('playlist-info').style.display = 'block';
+            document.getElementById('playlist-download-btn').style.display = 'inline-block';
+            currentPlaylistVideos = data.videos;
+        } else {
+            // Fallback for single video
+            document.getElementById('playlist-title').innerText = data.title;
+            document.getElementById('playlist-count').innerText = "Single Video";
+            document.getElementById('playlist-info').style.display = 'block';
+            document.getElementById('playlist-download-btn').style.display = 'inline-block';
+            currentPlaylistVideos = [{ url: url, title: data.title }];
         }
-
-        document.getElementById('playlist-title').innerText = data.title;
-        document.getElementById('playlist-count').innerText = `${data.duration} seconds`;
-        document.getElementById('playlist-info').style.display = 'block';
-        document.getElementById('playlist-download-btn').style.display = 'inline-block';
 
     } catch (e) {
         alert("Error: " + e.message);
@@ -83,6 +91,26 @@ async function checkPlaylist() {
         button.innerHTML = originalText;
         button.disabled = false;
     }
+}
+
+async function downloadPlaylist() {
+    if (!currentPlaylistVideos || currentPlaylistVideos.length === 0) {
+        alert("No videos found in playlist.");
+        return;
+    }
+
+    const quality = document.getElementById("playlist-quality").value;
+    const mode = document.getElementById("playlist-mode").value;
+
+    const confirmMsg = `You are about to download ${currentPlaylistVideos.length} videos. This will open multiple tabs. Continue?`;
+    if (!confirm(confirmMsg)) return;
+
+    currentPlaylistVideos.forEach((video, index) => {
+        setTimeout(() => {
+            const streamUrl = `${API_URL}/api/download?url=${encodeURIComponent(video.url)}&quality=${quality}&mode=${mode}`;
+            window.open(streamUrl, '_blank');
+        }, index * 1500); // 1.5s delay between triggers
+    });
 }
 
 // Subtitles
