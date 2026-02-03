@@ -636,15 +636,17 @@ footer {
     }
 
     /* Modern Scrollable Tabs */
+    /* Modern Scrollable Tabs */
     .tab-nav {
         display: flex;
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         gap: 0.8rem;
-        padding: 0.5rem 0.5rem 1rem 0.5rem;
-        margin-bottom: 1.5rem;
-        border-bottom: none;
+        padding: 0.5rem 0.2rem 1.0rem 0.2rem;
+        margin-bottom: 0.5rem;
+        /* Reduced margin */
+        border-bottom: none !important;
         scrollbar-width: none;
     }
 
@@ -657,19 +659,65 @@ footer {
         white-space: nowrap;
         padding: 0.7rem 1.4rem;
         font-size: 0.95rem;
-        background: #f8f9fa;
+        background: #f1f5f9;
         border-radius: 50px;
         border: 1px solid #e2e8f0;
         font-weight: 500;
         transition: all 0.2s;
+        position: relative;
+    }
+
+    .tab-btn::after {
+        display: none !important;
+        /* Force remove underline */
+        content: none !important;
     }
 
     .tab-btn.active {
         background: var(--secondary-color);
-        /* Dark pill for active */
         color: white;
         border-color: var(--secondary-color);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(42, 42, 42, 0.2);
+    }
+
+    .tab-btn.active::after {
+        display: none !important;
+    }
+
+    /* Fixed Input & Paste Button Layout */
+    .input-group {
+        display: flex;
+        flex-direction: row;
+        /* Force row */
+        gap: 8px;
+        margin-bottom: 1.5rem;
+        align-items: stretch;
+    }
+
+    #url,
+    #playlist-url,
+    #subtitle-url {
+        width: 100%;
+        /* Take available space */
+        flex: 1;
+        font-size: 16px;
+        /* Stop iOS zoom */
+        height: 54px;
+        /* Fixed height */
+        padding: 0 1rem;
+    }
+
+    #paste-btn {
+        width: 54px;
+        /* Matches height */
+        height: 54px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0;
+        flex-shrink: 0;
+        border-radius: var(--radius-md);
     }
 
     .tab-btn ion-icon {
