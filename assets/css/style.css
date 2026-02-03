@@ -66,6 +66,11 @@ body {
     color: var(--primary-color);
 }
 
+.mobile-menu-btn {
+    display: none;
+    /* Hidden on desktop */
+}
+
 /* Hero Section */
 .hero-section {
     padding: 4rem 1rem;
@@ -558,12 +563,76 @@ footer {
 /* Mobile & Tablet Optimization */
 @media (max-width: 768px) {
     .navbar {
-        padding: 1rem;
-        gap: 0.5rem;
+        padding: 1rem 1.5rem;
+        flex-direction: row;
+        /* Keep row direction */
+        justify-content: space-between;
+        /* Space out logo and button */
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+        display: block;
+        /* Visible on mobile */
+        background: transparent;
+        border: none;
+        font-size: 2rem;
+        color: var(--text-main);
+        cursor: pointer;
+        padding: 5px;
+        line-height: 0;
+    }
+
+    /* Mobile Nav Dropdown */
     .nav-links {
-        display: none; /* Hide nav links on mobile for cleaner look, or implement hamburger if needed. For now, hiding to focus on core function. */
+        display: none;
+        /* Hidden by default */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 1rem 0;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid var(--border-color);
+        animation: slideDown 0.3s ease-out forwards;
+    }
+
+    .nav-links.active {
+        display: flex;
+        /* Show when toggled */
+    }
+
+    .nav-links a {
+        margin: 0;
+        padding: 1rem 2rem;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 1.1rem;
+    }
+
+    .nav-links a:last-child {
+        border-bottom: none;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* Modern Scrollable Tabs */
@@ -572,35 +641,35 @@ footer {
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        gap: 0.5rem;
-        padding-bottom: 0.5rem;
+        gap: 0.8rem;
+        padding: 0.5rem 0.5rem 1rem 0.5rem;
         margin-bottom: 1.5rem;
-        border-bottom: none; /* Remove border to look cleaner */
-        scrollbar-width: none; /* Firefox */
+        border-bottom: none;
+        scrollbar-width: none;
     }
 
     .tab-nav::-webkit-scrollbar {
-        display: none; /* Chrome/Safari */
+        display: none;
     }
 
     .tab-btn {
-        flex: 0 0 auto; /* Don't stretch */
+        flex: 0 0 auto;
         white-space: nowrap;
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
-        background: #f1f5f9;
-        border-radius: 20px; /* Pill shape */
-        border: 1px solid transparent;
+        padding: 0.7rem 1.4rem;
+        font-size: 0.95rem;
+        background: #f8f9fa;
+        border-radius: 50px;
+        border: 1px solid #e2e8f0;
+        font-weight: 500;
+        transition: all 0.2s;
     }
 
     .tab-btn.active {
-        background: var(--primary-gradient);
+        background: var(--secondary-color);
+        /* Dark pill for active */
         color: white;
-        border-radius: 20px;
-    }
-
-    .tab-btn.active::after {
-        display: none; /* Remove underline style for pills */
+        border-color: var(--secondary-color);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .tab-btn ion-icon {
@@ -629,19 +698,24 @@ footer {
         margin: 0;
         width: 100%;
         border-radius: var(--radius-md);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Softer shadow */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        /* Softer shadow */
     }
 
     /* Input Group - Keep inline if possible, or stacked cleanly */
     .input-group {
         display: flex;
-        flex-direction: row; /* Force row */
+        flex-direction: row;
+        /* Force row */
         gap: 8px;
     }
 
-    #url, #playlist-url, #subtitle-url {
+    #url,
+    #playlist-url,
+    #subtitle-url {
         width: 100%;
-        font-size: 16px; /* Stop iOS zoom */
+        font-size: 16px;
+        /* Stop iOS zoom */
     }
 
     #paste-btn {
@@ -650,13 +724,15 @@ footer {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 50px; /* Fixed width */
+        width: 50px;
+        /* Fixed width */
         flex-shrink: 0;
     }
 
     /* Options Grid */
     .options-grid {
-        grid-template-columns: 1fr; /* Stack options */
+        grid-template-columns: 1fr;
+        /* Stack options */
         gap: 1rem;
         margin-bottom: 1.5rem;
     }
@@ -689,7 +765,7 @@ footer {
     .hero-title {
         font-size: 1.6rem;
     }
-    
+
     .logo {
         font-size: 1.2rem;
     }

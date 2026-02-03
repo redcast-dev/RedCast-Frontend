@@ -28,9 +28,14 @@
             <span class="logo-icon"><ion-icon name="cloud-download"></ion-icon></span>
             RedCast
         </div>
-        <div class="nav-links">
-            <a href="#features">Features</a>
-            <a href="#howto">How to Use</a>
+
+        <button class="mobile-menu-btn" onclick="toggleMenu()">
+            <ion-icon name="menu-outline"></ion-icon>
+        </button>
+
+        <div class="nav-links" id="nav-links">
+            <a href="#features" onclick="toggleMenu()">Features</a>
+            <a href="#howto" onclick="toggleMenu()">How to Use</a>
             <a href="privacy.html">Privacy</a>
         </div>
     </nav>

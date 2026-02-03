@@ -3,6 +3,12 @@ const API_URL = window.location.hostname === "localhost" || window.location.host
     ? "http://localhost:8080"
     : "https://redcast-backend-production.up.railway.app"; // Replace with your Railway URL
 
+// Mobile Menu Toggle
+function toggleMenu() {
+    const navLinks = document.getElementById('nav-links');
+    navLinks.classList.toggle('active');
+}
+
 // Tab Switching
 function switchTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
