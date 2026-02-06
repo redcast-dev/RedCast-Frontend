@@ -512,7 +512,9 @@ textarea::placeholder {
     color: var(--text-main);
 }
 
-.faq-list h3:first-child { margin-top: 0; }
+.faq-list h3:first-child {
+    margin-top: 0;
+}
 
 .faq-list p {
     margin: 0 0 0.5rem;
