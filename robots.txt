@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://redcast.online/sitemap.xml
+Sitemap: https://www.redcast.online/sitemap.xml
