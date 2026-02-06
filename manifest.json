@@ -1,0 +1,15 @@
+{
+    "name": "RedCast - Best YouTube Downloader",
+    "short_name": "RedCast",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0f0f0f",
+    "theme_color": "#ff4d6d",
+    "icons": [
+        {
+            "src": "/assets/images/favicon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml"
+        }
+    ]
+}
